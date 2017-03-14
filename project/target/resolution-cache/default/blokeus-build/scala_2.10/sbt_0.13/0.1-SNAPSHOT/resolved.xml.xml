@@ -4,7 +4,7 @@
 		module="blokeus-build"
 		revision="0.1-SNAPSHOT"
 		status="integration"
-		publication="20170313195317"
+		publication="20170313215401"
 		e:sbtVersion="0.13" e:scalaVersion="2.10"
 	>
 		<description>
