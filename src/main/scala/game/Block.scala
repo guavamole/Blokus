@@ -1,5 +1,7 @@
 package game
 
-class Block {
-
+object Block {
+  def main(args: Array[String]): Unit = {
+    println("Hello")
+  }
 }
