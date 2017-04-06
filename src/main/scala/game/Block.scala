@@ -6,7 +6,7 @@ import org.json4s._
 import org.json4s.native.JsonMethods._
 
 case class Block(id: Int, coordinates: Seq[Coordinate]){
-  def map[A](f: Seq[Coordinate] => A): A = f(coordinates)
+  def mapCoordinate[A](f: Coordinate => A): Seq[A] = coordinates.map(f)
 }
 case class RawBlock(id: Int, block_dictionary: Seq[Seq[Seq[Int]]])
 
@@ -14,7 +14,7 @@ object Block {
   def apply(id: Int): Block = Block(id, 0)
   def apply(id: Int, orientation: Int): Block = {
     BlockDictionary.dict.get(id) match {
-      case Some(x) => x(orientation)
+      case Some(blockOrientations) => blockOrientations(orientation)
       case None => throw new IndexOutOfBoundsException("block id must be between 0 and 20")
     }
   }

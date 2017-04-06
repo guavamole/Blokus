@@ -18,7 +18,7 @@ class Board(playerOne: Player, playerTwo: Player){
 
   def placeBlock(block: Block, place: Coordinate, player: Player, option: Option[Int]): Try[Board] = {
     val corners: HashSet[Coordinate] = playerCorners.get(player).get
-    val coordinates: Seq[Coordinate] = block.map(c => Coordinate(c.x + place.x, c.y + place.y))
+    val coordinates: Seq[Coordinate] = block.mapCoordinate(c => Coordinate(c.x + place.x, c.y + place.y))
     if (validate(coordinates, player)) {
       coordinates.foreach(c => {
         set(c, player)
