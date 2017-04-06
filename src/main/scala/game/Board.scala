@@ -1,10 +1,11 @@
 package game
 
+import datatypes.Coordinate
+
 import scala.collection.mutable.{HashMap, HashSet}
 import scala.util.{Failure, Success, Try}
 
 class Board(playerOne: Player, playerTwo: Player){
-  case class Coordinate(x: Int, y: Int)
   case class Corners(player: Player, corners: HashSet[Coordinate])
   var board = HashMap[Coordinate, Player]()
   var playerCorners: Map[Player, HashSet[Coordinate]] = Map(
@@ -15,9 +16,9 @@ class Board(playerOne: Player, playerTwo: Player){
   def set(coordinates: Coordinate, player: Player): Unit = board.put(coordinates,player)
   def get(coordinates: Coordinate): Option[Player] = board.get(coordinates)
 
-  def placeBlock(block: Seq[Coordinate], place: Coordinate, player: Player, option: Option[Int]): Try[Board] = {
+  def placeBlock(block: Block, place: Coordinate, player: Player, option: Option[Int]): Try[Board] = {
     val corners: HashSet[Coordinate] = playerCorners.get(player).get
-    val coordinates: Seq[Coordinate] = block.map(c => Coordinate(c.x + place.x, c.y + place.y))
+    val coordinates: Seq[Coordinate] = block.mapCoordinate(c => Coordinate(c.x + place.x, c.y + place.y))
     if (validate(coordinates, player)) {
       coordinates.foreach(c => {
         set(c, player)
