@@ -12,12 +12,11 @@ object Block {
   def apply(id: Int): Block = Block(id, 0)
   def apply(id: Int, orientation: Int): Block = {
     BlockDictionary.dict.get(id) match {
-      case Some(x) => x.head
+      case Some(x) => x(orientation)
       case None => throw new IndexOutOfBoundsException("block id must be between 0 and 20")
     }
   }
 }
-
 
 object BlockDictionary {
   implicit val formats = DefaultFormats
