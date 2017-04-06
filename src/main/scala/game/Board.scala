@@ -16,7 +16,7 @@ class Board(playerOne: Player, playerTwo: Player){
   def set(coordinates: Coordinate, player: Player): Unit = board.put(coordinates,player)
   def get(coordinates: Coordinate): Option[Player] = board.get(coordinates)
 
-  def placeBlock(block: Seq[Coordinate], place: Coordinate, player: Player, option: Option[Int]): Try[Board] = {
+  def placeBlock(block: Block, place: Coordinate, player: Player, option: Option[Int]): Try[Board] = {
     val corners: HashSet[Coordinate] = playerCorners.get(player).get
     val coordinates: Seq[Coordinate] = block.map(c => Coordinate(c.x + place.x, c.y + place.y))
     if (validate(coordinates, player)) {

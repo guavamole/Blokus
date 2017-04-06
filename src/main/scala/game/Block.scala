@@ -5,7 +5,9 @@ import scala.io.Source
 import org.json4s._
 import org.json4s.native.JsonMethods._
 
-case class Block(coordinates: Seq[Coordinate])
+case class Block(id: Int, coordinates: Seq[Coordinate]){
+  def map[A](f: Seq[Coordinate] => A): A = f(coordinates)
+}
 case class RawBlock(id: Int, block_dictionary: Seq[Seq[Seq[Int]]])
 
 object Block {
@@ -25,7 +27,7 @@ object BlockDictionary {
     parse(rawData).extract[Seq[RawBlock]].map{ rawBlock =>
        val blocks = rawBlock.block_dictionary.map{ block =>
           val coordinates = block.map(c => Coordinate(c.head, c.last))
-          Block(coordinates)
+          Block(rawBlock.id, coordinates)
        }
        rawBlock.id -> blocks
     } toMap
