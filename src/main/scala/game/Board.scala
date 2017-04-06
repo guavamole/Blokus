@@ -1,10 +1,11 @@
 package game
 
+import datatypes.Coordinate
+
 import scala.collection.mutable.{HashMap, HashSet}
 import scala.util.{Failure, Success, Try}
 
 class Board(playerOne: Player, playerTwo: Player){
-  case class Coordinate(x: Int, y: Int)
   case class Corners(player: Player, corners: HashSet[Coordinate])
   var board = HashMap[Coordinate, Player]()
   var playerCorners: Map[Player, HashSet[Coordinate]] = Map(
