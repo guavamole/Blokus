@@ -13,7 +13,7 @@ import players.ActorFactory
 class MatchMaking @Inject()(factory: ActorFactory, val dbObject: DbObject, val logger: Logger) extends Actor {
 
   var gameCount: Long = 0
-  val maxGames = 1000
+  val maxGames: Long = 1000
   //todo: find better way to keep track of players and boards
   var boards = Seq[ActorRef]()
   var players = Seq[ActorRef]()
@@ -22,7 +22,7 @@ class MatchMaking @Inject()(factory: ActorFactory, val dbObject: DbObject, val l
 
   def receive = {
     case GameResult(p1, p2, score ,id) =>
-      logger.debug(score.toString)
+      print(score.toString)
       if(gameCount < maxGames) sender() ! StartGame(gameCount)
 
     case CreateBoard(p1, p2)  =>

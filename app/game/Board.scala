@@ -5,13 +5,12 @@ import datatypes._
 import scala.collection.immutable.IndexedSeq
 import akka.actor._
 import datatypes.{Move, NoMove, StartGame}
-import akka.event.Logging
+import play.api.Logger
 
 import scala.collection.mutable.ListBuffer
 
-class Board(players: Seq[ActorRef]) extends Actor {
+class Board(players: Seq[ActorRef], logger: Logger) extends Actor {
 
-  private val log = Logging(context.system, this)
   private var supervisor: ActorRef = null
   // Refreshed every round
   private var board = Array.fill(Config.BOARDSIZE, Config.BOARDSIZE)(Config.EMPTYTILE)
@@ -23,23 +22,19 @@ class Board(players: Seq[ActorRef]) extends Actor {
 
 
   def receive = {
-    case Move(block: Block, coordinate: Coordinate) => {
+    case Move(block: Block, coordinate: Coordinate) =>
       placeBlock(block, coordinate)
       players(currentTurn) ! BoardInfo(boardState(), currentTurn, currentPlayerPieces())
-    }
-    case StartGame(id) => {
+    case StartGame(id) =>
       supervisor = sender()
       gameId = id
       players(currentTurn) ! BoardInfo(boardState(), currentTurn, currentPlayerPieces())
-    }
     case NoMove => supervisor ! endGame()
   }
 
-  def set(coordinate: Coordinate): Unit = {
+  def set(coordinate: Coordinate): Unit =
     board(coordinate.x)(coordinate.y) = currentTurn
-  }
 
-  // This is sketchy, but a lot of code uses this function so :/
   def get(coordinates: Coordinate): Option[Int] = board(coordinates.x)(coordinates.y) match {
     case Config.EMPTYTILE => None
     case x if x != -1 => Some(x)
